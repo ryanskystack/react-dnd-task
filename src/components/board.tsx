@@ -20,7 +20,10 @@ const BoardEl = styled.div`
 export const Board: React.FC = (props) => {
   // Initialize board state with board data
   const [dataState, setDataState] = useState<any>(initialBoardData);
-
+  
+  const handleUpdate = (newDataState: any) => {
+    setDataState(newDataState);
+  }
 
   // Handle drag & drop
   const onDragEnd = (result: any) => {
@@ -122,7 +125,7 @@ export const Board: React.FC = (props) => {
           // Get item belonging to the current column
           const items = column.itemsIds.map((itemId: string) => (dataState.items as any)[itemId])
           // Render the BoardColumn component
-          return <BoardColumn key={column.id} dataState={dataState} column={column} items={items} setDataState={setDataState} />
+          return <BoardColumn key={column.id} dataState={dataState} column={column} items={items} parentCallback={handleUpdate} setDataState={setDataState} />
         })}
       </DragDropContext>
     </BoardEl>

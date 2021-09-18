@@ -4,22 +4,29 @@ import styled from 'styled-components';
 
 // Define types for board item element properties
 type AddButtonProps = {
+    id: any
     onClick: any
 }
 
 // Create styles board element properties
-const AddButtonEl = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+const AddButtonEl = styled.button`
+    right:0;
+    width:20px;
+    height:20px;
+    display:flex;
+    justify-content: space-between;
+    background-color:green;
+    color:white;
 `
 export const AddButton: React.FC<AddButtonProps> = (props) => {
-    const { onClick } = props;
+    const { id, onClick } = props;
     return (
-        <AddButtonEl>
-            <div onClick={onClick}>
 
-                {/* <svg
+        <AddButtonEl id={id} onClick={onClick} type="button">
+
+            {/* <button id={id} onClick={onClick} style={{width:'20px',height:'20px',backgroundColor:'green'}} type="button">
+            </button> */}
+            {/* <svg
                     aria-hidden="true"
                     focusable="false"
                     data-prefix="fas"
@@ -34,19 +41,13 @@ export const AddButton: React.FC<AddButtonProps> = (props) => {
                     >
                     </path>
                 </svg> */}
-            </div>
+     
         </AddButtonEl>
 
 
     );
 
 
-    //     <BoardItemEl
-
-    //     >
-    //       {props.item.content}
-    //     </BoardItemEl>
-    //   )}
 
 
 };
