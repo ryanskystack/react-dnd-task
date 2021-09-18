@@ -7,8 +7,8 @@ import { Board } from './components/board'
 
 // Use createGlobalStyle to change the background of 'body' element
 const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #4bcffa;
+  body {    
+    background-color: #ecf0f3;
   }
 `
 
