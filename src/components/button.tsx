@@ -15,53 +15,37 @@ export const Button: React.FC<ButtonProps> = (props) => {
     const { id, onClick, variant } = props;
 
     const ButtonEl = styled.button<ButtonProps>`
-        right:0;
-        width:20px;
-        height:20px;
-        display:flex;
-        justify-content: space-between;
-        background-color:green;
+
+        width:32px;
+        height:32px;
         color:white;
-        font-size: 1em;
-        margin: 1em;
-        padding: 0.25em 1em;
-        border: 2px solid #5db5a9;
-        border-radius: 3px;
-    
+        border: 0;
+        padding:0;
+        border-radius: 50%;    
         &:hover {
             cursor: pointer;
         }
     
         ${({ variant = '' }) => variant === 'add' && `
-        background-color: #5db5a9;
-        color: #fff;
+        width:32px;
+        height:32px;
+        background: linear-gradient(145deg, #5dffef, #4ee1c9);
+        box-shadow:  1.5px 1.5px 2px #39a391,
+                     -1.5px -1.5px 2px #75ffff;
+
       `}
         ${({ variant = '' }) => variant === 'confirm' && `
-          background-color: #fff;
-          color: #5db5a9;
+        width:24px;
+        height:24px;
+        background: linear-gradient(145deg, #27ff4c, #20dd40);
+        box-shadow:  1.5px 1.5px 2px #179f2e,
+                     -1.5px -1.5px 2px #31ff60;
+
         `}      
      `
     return (
-        <ButtonEl id={id} onClick={onClick} variant={variant} type="button">
-
-            {/* <button id={id} onClick={onClick} style={{width:'20px',height:'20px',backgroundColor:'green'}} type="button">
-            </button> */}
-            {/* <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="fas"
-                    data-icon="backward"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 512 512"
-                >
-                    <path
-                        fill="currentColor"
-                        d="M11.5 280.6l192 160c20.6 17.2 52.5 2.8 52.5-24.6V96c0-27.4-31.9-41.8-52.5-24.6l-192 160c-15.3 12.8-15.3 36.4 0 49.2zm256 0l192 160c20.6 17.2 52.5 2.8 52.5-24.6V96c0-27.4-31.9-41.8-52.5-24.6l-192 160c-15.3 12.8-15.3 36.4 0 49.2z"
-                    >
-                    </path>
-                </svg> */}
-
+        <ButtonEl id={id} onClick={onClick} variant={variant} type="button"> 
+            {variant==='add'?'╋':'✔' }
         </ButtonEl>
     );
 

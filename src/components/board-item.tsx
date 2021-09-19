@@ -11,8 +11,8 @@ type BoardItemProps = {
   item: any,
   editState: any,
   setEditState: any,
-  confirmState:any, 
-  setConfirmState:any
+  confirmState: any,
+  setConfirmState: any
 }
 
 // Define types for board item element style properties
@@ -23,7 +23,7 @@ type BoardItemStylesProps = {
 
 // Create style for board item element
 const BoardItemEl = styled.div<BoardItemStylesProps>`
-  padding: 8px;
+
   background-color: ${(props) => props.isDragging ? '#d3e4ee' : '#ecf0f3'};
   border-radius: 4px;
   box-shadow: 9px 9px 15px #d1d9e6, -9px -9px 15px #fff;
@@ -35,31 +35,58 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
   background-color: #EBECF0;
   text-shadow: 1px 1px 0 #FFF;
   color: #61677C;
-  font-weight: bold;  
+  font-weight: bold;
+  font-size:  
   transition: all 0.2s ease-in-out;
   cursor: move;
-  font-weight: 600;
+  
 
   &:hover {
     box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
-  }
+  }sdfsdfds
 
   & + & {
     margin-top: 4px;
   }
 `
 
-// Create style for board item element
-const EditEl = styled.div`
-&:hover {
-  cursor: pointer;
-}
+// Create style for input item element
+const InputWrapperEl = styled.div`
+ display:flex;
+ justify-content: space-between; 
+ align-items: center;
+
+ box-sizing: border-box;
+ transition: all 0.2s ease-in-out;
+ height:21px;
+`
+
+// Create style for input item element
+const InputEl = styled.input`
+
+  margin-right: 8px;
+  background: #d0f6ec;
+  border-width:0; 
+  box-shadow:  inset 2px 2px 5px #87a099, inset -5px -5px 10px #ffffff;
+  color: #61677C;
+  font-weight: bold;  
+  font-weight: 400;
+  width: 200px;
+  height:28px  
+
+  &:focus {
+    outline: none;
+    color: #61677C;
+    font-weight: bold;  
+    font-weight: 400;
+    box-shadow:  inset 1px 1px 2px #BABECC, inset -1px -1px 2px #FFF;
+  }
+
 `
 // Create and export the BoardItem component
 export const BoardItem = (props: BoardItemProps) => {
   const { item, index, editState, setEditState, confirmState, setConfirmState } = props;
   const [inputState, setInputState] = useState<any>(item.content);
-  console.log('item:props:', props);
   // Create handler for update the input content of item 
   const changeHanddler = (e: any) => {
     setInputState(e.target.value);
@@ -68,32 +95,16 @@ export const BoardItem = (props: BoardItemProps) => {
   const confirmHandler = (e: any) => {
     item.content = inputState;
     item['isActive'] = !item['isActive'];
-    console.log('confirm item:', item);
-    item===editState&&setEditState('');
+    item === editState && setEditState('');
     setConfirmState(item);
   }
 
   //Create handler for editting the item by click the item itself
   const editHanddler = (e: any) => {
-    console.log('e.target.id:', e.target.id);
     item['isActive'] = true;
-    console.log("edit item:",item);
-    item===confirmState&&setConfirmState('');
+    item === confirmState && setConfirmState('');
     setEditState(item);
   }
-
-  // let itemKey = e.target.id;
-  // itemList[`${itemKey}`]=editState;
-  // // update dataState (update items list as well)
-  // const newDataState = {
-  //   ...dataState,
-  //   items: itemList
-  // }
-  // console.log("newDataState:", newDataState);
-  // setDataState(newDataState);
-
-
-
 
   return <Draggable draggableId={item.id} index={index}>
     {(provided, snapshot) => (
@@ -105,10 +116,10 @@ export const BoardItem = (props: BoardItemProps) => {
       >
         {
           item.isActive ?
-            (<div>
-              <input autoFocus type="text" onChange={changeHanddler} value={inputState} />
+            (<InputWrapperEl>
+                <InputEl autoFocus type="text" onChange={changeHanddler} value={inputState} />
               <Button variant='confirm' key={item.id} id={item.id} onClick={confirmHandler} />
-            </div>
+            </InputWrapperEl>
             )
             :
             <div id={item.id} onClick={editHanddler}>
