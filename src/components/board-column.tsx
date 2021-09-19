@@ -98,40 +98,31 @@ const BoardColumnContent = styled.div<BoardColumnContentStylesProps>`
 // Create and export the BoardColumn component
 export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
   //refactor the props
-  console.log("props:", props);
+  console.log("column props:", props);
   const { dataState, items, column, setDataState } = props;
   const itemList = dataState.items;
   const columns = dataState.columns;
 
   // Create handler for button to add item 
   const addItemHandler = (e: any) => {
-    console.log("e:", e);
-    console.log("e.target:", e.target);
+
     //Check out the clicked button and define its column
     let targetKey = (e.target as any).id;
-    console.log("targetKey:", targetKey);
+
     //Check out the number of the keys and name the added item
     let count = Object.keys(itemList).length;
 
     let lastId = Object.keys(itemList)[count - 1];
 
-    console.log(" Object.keys(itemList):", Object.keys(itemList));
-    console.log("count:", count);
-    console.log("lastId:", lastId);
     let largestIndex = parseInt(lastId.substring(5));
 
     let newIndex = largestIndex + 1;
     let newItemId: string = 'item-' + newIndex;
     let newItemContent: string = `Content of New item.`;
 
-    console.log("newItemId:", newItemId);
-    console.log("newItemContent:", newItemContent);
-    console.log("columns[targetKey].itemsIds:", columns[targetKey].itemsIds);
     // update the current column list with the new added item    
     let newItemsIds = columns[targetKey].itemsIds;
     newItemsIds.unshift(newItemId);
-
-    console.log("newItemsIds:", newItemsIds);
 
     // Create new Item to update Items 
     let newItem = {
@@ -141,24 +132,21 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     };
     itemList[`${newItemId}`] = newItem;
 
-    console.log("new-itemList:", itemList);
-
     // update dataState (update items list as well)
     const newDataState = {
       ...dataState,
       items: itemList
     }
-    console.log("newDataState:", newDataState);
     setDataState(newDataState);
   }
 
   // Create handler for uplift the edited item state to its parent component
   const [editState, setEditState] = useState<any>('');
-
+  const [confirmState, setConfirmState] = useState<any>('');
   // Create handler for update the dataState based on the input result
   const editItemHandler = (e: any) => {
-    let itemKey = editState.id;
-    itemList[`${itemKey}`]=editState;
+    let itemKey = e.target.id;
+    itemList[`${itemKey}`].content = editState;
     // update dataState (update items list as well)
     const newDataState = {
       ...dataState,
@@ -175,8 +163,6 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
         </BoardColumnTitle>
         {/* <AddButtonDiv> */}
 
-        {/* <SettingToggle key={column.id} onClick={onClickAdder} /> */}
-
         <Button variant='add' key={column.id} id={column.id} onClick={addItemHandler} />
         {/* </AddButtonDiv> */}
       </BoardColumnHeader>
@@ -187,7 +173,16 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {items.map((item: any, index: number) => <BoardItem key={item.id} item={item}  index={index} editState={editState} setEditState={setEditState} />)}
+            {items.map((item: any, index: number) =>
+              <BoardItem
+                key={item.id}
+                item={item}
+                index={index}
+                editState={editState}
+                setEditState={setEditState}
+                confirmState={confirmState}
+                setConfirmState={setConfirmState}
+              />)}
             {provided.placeholder}
           </BoardColumnContent>
         )}

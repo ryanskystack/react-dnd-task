@@ -28,7 +28,6 @@ export const Board: React.FC = (props) => {
   const initialDataState = initialBoardData;
   const initialItems: object = initialDataState.items;
   let itemArr = Object.values(initialItems);
-  console.log('itemArr', itemArr);
   for (let i = 0; i < 7; i++) {
     itemArr[i]['isActive']=false;    
   }
@@ -36,7 +35,7 @@ export const Board: React.FC = (props) => {
   //   item['isActive']=false;
   // }
 
-  console.log('initialItems:', initialItems);
+  console.log('board initialItems:', initialItems);
   const [dataState, setDataState] = useState<any>(initialDataState);
 
   // Handle drag & drop

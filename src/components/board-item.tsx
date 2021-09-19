@@ -9,8 +9,10 @@ import { Button } from './button';
 type BoardItemProps = {
   index: number,
   item: any,
-  editState:any,
-  setEditState: any
+  editState: any,
+  setEditState: any,
+  confirmState:any, 
+  setConfirmState:any
 }
 
 // Define types for board item element style properties
@@ -35,7 +37,7 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
   color: #61677C;
   font-weight: bold;  
   transition: all 0.2s ease-in-out;
-  cursor: pointer;
+  cursor: move;
   font-weight: 600;
 
   &:hover {
@@ -47,33 +49,51 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
   }
 `
 
-// // Create style for board item element
-// const BoardItemEl = styled.div`
-
-// `
+// Create style for board item element
+const EditEl = styled.div`
+&:hover {
+  cursor: pointer;
+}
+`
 // Create and export the BoardItem component
 export const BoardItem = (props: BoardItemProps) => {
-  const { item, index, editState, setEditState } = props;
+  const { item, index, editState, setEditState, confirmState, setConfirmState } = props;
   const [inputState, setInputState] = useState<any>(item.content);
-
+  console.log('item:props:', props);
   // Create handler for update the input content of item 
   const changeHanddler = (e: any) => {
-    console.log('e.target.value:', e.target.value);
     setInputState(e.target.value);
   }
   // Create handler for confirming the input content of item 
   const confirmHandler = (e: any) => {
     item.content = inputState;
-    item.isActive = !item['isActive'];
-    setEditState(item);
-
+    item['isActive'] = !item['isActive'];
+    console.log('confirm item:', item);
+    item===editState&&setEditState('');
+    setConfirmState(item);
   }
 
   //Create handler for editting the item by click the item itself
   const editHanddler = (e: any) => {
-    console.log('e.target:', e.target);
-
+    console.log('e.target.id:', e.target.id);
+    item['isActive'] = true;
+    console.log("edit item:",item);
+    item===confirmState&&setConfirmState('');
+    setEditState(item);
   }
+
+  // let itemKey = e.target.id;
+  // itemList[`${itemKey}`]=editState;
+  // // update dataState (update items list as well)
+  // const newDataState = {
+  //   ...dataState,
+  //   items: itemList
+  // }
+  // console.log("newDataState:", newDataState);
+  // setDataState(newDataState);
+
+
+
 
   return <Draggable draggableId={item.id} index={index}>
     {(provided, snapshot) => (
@@ -92,9 +112,8 @@ export const BoardItem = (props: BoardItemProps) => {
             )
             :
             <div id={item.id} onClick={editHanddler}>
-              item.content
+              {item.content}
             </div>
-          // (<input type="button" value={item.content} />)
         }
 
 
