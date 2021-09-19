@@ -15,7 +15,8 @@ type BoardColumnProps = {
   column: any,
   dataState: any,
   items: any,
-  setDataState: any
+  setDataState: any,
+
 }
 
 // Define types for board column content style properties
@@ -186,7 +187,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {items.map((item: any, index: number) => <BoardItem key={item.id} item={item} index={index} setEditState={setEditState} />)}
+            {items.map((item: any, index: number) => <BoardItem key={item.id} item={item}  index={index} editState={editState} setEditState={setEditState} />)}
             {provided.placeholder}
           </BoardColumnContent>
         )}

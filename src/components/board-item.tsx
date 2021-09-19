@@ -9,6 +9,7 @@ import { Button } from './button';
 type BoardItemProps = {
   index: number,
   item: any,
+  editState:any,
   setEditState: any
 }
 
@@ -46,9 +47,13 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
   }
 `
 
+// // Create style for board item element
+// const BoardItemEl = styled.div`
+
+// `
 // Create and export the BoardItem component
 export const BoardItem = (props: BoardItemProps) => {
-  const { item, index, setEditState } = props;
+  const { item, index, editState, setEditState } = props;
   const [inputState, setInputState] = useState<any>(item.content);
 
   // Create handler for update the input content of item 
@@ -59,8 +64,15 @@ export const BoardItem = (props: BoardItemProps) => {
   // Create handler for confirming the input content of item 
   const confirmHandler = (e: any) => {
     item.content = inputState;
-    item.isActive=!item['isActive'];
+    item.isActive = !item['isActive'];
     setEditState(item);
+
+  }
+
+  //Create handler for editting the item by click the item itself
+  const editHanddler = (e: any) => {
+    console.log('e.target:', e.target);
+
   }
 
   return <Draggable draggableId={item.id} index={index}>
@@ -79,7 +91,9 @@ export const BoardItem = (props: BoardItemProps) => {
             </div>
             )
             :
-            item.content
+            <div id={item.id} onClick={editHanddler}>
+              item.content
+            </div>
           // (<input type="button" value={item.content} />)
         }
 
