@@ -1,11 +1,15 @@
-import * as React from 'react'
-import { Draggable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import * as React from 'react';
+import { useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+import styled from 'styled-components';
+// Import BoardItem component
+import { Button } from './button';
 
 // Define types for board item element properties
 type BoardItemProps = {
-  index: number
-  item: any
+  index: number,
+  item: any,
+  setEditState: any
 }
 
 // Define types for board item element style properties
@@ -44,7 +48,21 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
 
 // Create and export the BoardItem component
 export const BoardItem = (props: BoardItemProps) => {
-  const { item, index } = props;
+  const { item, index, setEditState } = props;
+  const [inputState, setInputState] = useState<any>(item.content);
+
+  // Create handler for update the input content of item 
+  const changeHanddler = (e: any) => {
+    console.log('e.target.value:', e.target.value);
+    setInputState(e.target.value);
+  }
+  // Create handler for confirming the input content of item 
+  const confirmHandler = (e: any) => {
+    item.content = inputState;
+    item.isActive=!item['isActive'];
+    setEditState(item);
+  }
+
   return <Draggable draggableId={item.id} index={index}>
     {(provided, snapshot) => (
       <BoardItemEl
@@ -53,7 +71,20 @@ export const BoardItem = (props: BoardItemProps) => {
         ref={provided.innerRef}
         isDragging={snapshot.isDragging}
       >
-        {item.content}
+        {
+          item.isActive ?
+            (<div>
+              <input autoFocus type="text" onChange={changeHanddler} value={inputState} />
+              <Button variant='confirm' key={item.id} id={item.id} onClick={confirmHandler} />
+            </div>
+            )
+            :
+            item.content
+          // (<input type="button" value={item.content} />)
+        }
+
+
+        {/* */}
       </BoardItemEl>
     )}
   </Draggable>

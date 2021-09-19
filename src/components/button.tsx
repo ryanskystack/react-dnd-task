@@ -3,26 +3,46 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 // Define types for board item element properties
-type AddButtonProps = {
-    id: any
+type ButtonProps = {
+    variant: string,
+    id: string,
     onClick: any
 }
 
-// Create styles board element properties
-const AddButtonEl = styled.button`
-    right:0;
-    width:20px;
-    height:20px;
-    display:flex;
-    justify-content: space-between;
-    background-color:green;
-    color:white;
-`
-export const AddButton: React.FC<AddButtonProps> = (props) => {
-    const { id, onClick } = props;
-    return (
+// Create button depending on range of situations based on variant
 
-        <AddButtonEl id={id} onClick={onClick} type="button">
+export const Button: React.FC<ButtonProps> = (props) => {
+    const { id, onClick, variant } = props;
+
+    const ButtonEl = styled.button<ButtonProps>`
+        right:0;
+        width:20px;
+        height:20px;
+        display:flex;
+        justify-content: space-between;
+        background-color:green;
+        color:white;
+        font-size: 1em;
+        margin: 1em;
+        padding: 0.25em 1em;
+        border: 2px solid #5db5a9;
+        border-radius: 3px;
+    
+        &:hover {
+            cursor: pointer;
+        }
+    
+        ${({ variant = '' }) => variant === 'add' && `
+        background-color: #5db5a9;
+        color: #fff;
+      `}
+        ${({ variant = '' }) => variant === 'confirm' && `
+          background-color: #fff;
+          color: #5db5a9;
+        `}      
+     `
+    return (
+        <ButtonEl id={id} onClick={onClick} variant={variant} type="button">
 
             {/* <button id={id} onClick={onClick} style={{width:'20px',height:'20px',backgroundColor:'green'}} type="button">
             </button> */}
@@ -41,10 +61,8 @@ export const AddButton: React.FC<AddButtonProps> = (props) => {
                     >
                     </path>
                 </svg> */}
-     
-        </AddButtonEl>
 
-
+        </ButtonEl>
     );
 
 

@@ -22,8 +22,22 @@ align-items: flex-start
 // `
 
 export const Board: React.FC = (props) => {
+
   // Initialize board state with board data
-  const [dataState, setDataState] = useState<any>(initialBoardData);
+
+  const initialDataState = initialBoardData;
+  const initialItems: object = initialDataState.items;
+  let itemArr = Object.values(initialItems);
+  console.log('itemArr', itemArr);
+  for (let i = 0; i < 7; i++) {
+    itemArr[i]['isActive']=false;    
+  }
+  // for (let item of itemArr) {    
+  //   item['isActive']=false;
+  // }
+
+  console.log('initialItems:', initialItems);
+  const [dataState, setDataState] = useState<any>(initialDataState);
 
   // Handle drag & drop
   const onDragEnd = (result: any) => {
@@ -154,13 +168,13 @@ export const Board: React.FC = (props) => {
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                     >
-                        <BoardColumn
-                          key={column.id}
-                          dataState={dataState}
-                          column={column}
-                          items={items}
-                          setDataState={setDataState}
-                        />
+                      <BoardColumn
+                        key={column.id}
+                        dataState={dataState}
+                        column={column}
+                        items={items}
+                        setDataState={setDataState}
+                      />
                     </div>
                   )}
                 </Draggable>

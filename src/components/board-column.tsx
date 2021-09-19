@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { MouseEvent } from 'react';
+import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 // Import BoardItem component
 import { BoardItem } from './board-item';
 // Import BoardItem component
-import { AddButton } from './add-button';
+import { Button } from './button';
 // Import BoardItem component
 import { SettingToggle } from './setting-toggle';
 // Define types for board column element properties
@@ -96,13 +96,14 @@ const BoardColumnContent = styled.div<BoardColumnContentStylesProps>`
 
 // Create and export the BoardColumn component
 export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
+  //refactor the props
   console.log("props:", props);
-  const { dataState, column, setDataState } = props;
-  let itemList = dataState.items;
-  let columns = dataState.columns;
+  const { dataState, items, column, setDataState } = props;
+  const itemList = dataState.items;
+  const columns = dataState.columns;
 
-// Create handler for button to add item 
-  const addItemHandler= (e: any) => {
+  // Create handler for button to add item 
+  const addItemHandler = (e: any) => {
     console.log("e:", e);
     console.log("e.target:", e.target);
     //Check out the clicked button and define its column
@@ -126,20 +127,20 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     console.log("newItemContent:", newItemContent);
     console.log("columns[targetKey].itemsIds:", columns[targetKey].itemsIds);
     // update the current column list with the new added item    
-    let ItemsIdsArr = columns[targetKey].itemsIds;
-    ItemsIdsArr.unshift(newItemId);
+    let newItemsIds = columns[targetKey].itemsIds;
+    newItemsIds.unshift(newItemId);
 
-    console.log("ItemsIdsArr:", ItemsIdsArr);
+    console.log("newItemsIds:", newItemsIds);
 
     // Create new Item to update Items 
-
     let newItem = {
       id: newItemId,
-      content: newItemContent
+      content: newItemContent,
+      isActive: true
     };
     itemList[`${newItemId}`] = newItem;
 
-    console.log("itemList:", itemList);
+    console.log("new-itemList:", itemList);
 
     // update dataState (update items list as well)
     const newDataState = {
@@ -150,6 +151,21 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     setDataState(newDataState);
   }
 
+  // Create handler for uplift the edited item state to its parent component
+  const [editState, setEditState] = useState<any>('');
+
+  // Create handler for update the dataState based on the input result
+  const editItemHandler = (e: any) => {
+    let itemKey = editState.id;
+    itemList[`${itemKey}`]=editState;
+    // update dataState (update items list as well)
+    const newDataState = {
+      ...dataState,
+      items: itemList
+    }
+    console.log("newDataState:", newDataState);
+    setDataState(newDataState);
+  }
   return (
     <BoardColumnWrapper>
       <BoardColumnHeader>
@@ -160,7 +176,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
 
         {/* <SettingToggle key={column.id} onClick={onClickAdder} /> */}
 
-        <AddButton key={column.id} id={column.id} onClick={addItemHandler} />
+        <Button variant='add' key={column.id} id={column.id} onClick={addItemHandler} />
         {/* </AddButtonDiv> */}
       </BoardColumnHeader>
       <Droppable droppableId={column.id}>
@@ -170,7 +186,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {props.items.map((item: any, index: number) => <BoardItem key={item.id} item={item} index={index} />)}
+            {items.map((item: any, index: number) => <BoardItem key={item.id} item={item} index={index} setEditState={setEditState} />)}
             {provided.placeholder}
           </BoardColumnContent>
         )}
