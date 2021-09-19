@@ -2,14 +2,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-
-
-// Import BoardItem component
 import { BoardItem } from './board-item';
-// Import BoardItem component
 import { Button } from './button';
-// Import BoardItem component
-import { SettingToggle } from './setting-toggle';
+
 // Define types for board column element properties
 type BoardColumnProps = {
   column: any,
@@ -24,13 +19,6 @@ type BoardColumnProps = {
 type BoardColumnContentStylesProps = {
   isDraggingOver: boolean
 }
-
-// // Define types for add-button element properties
-// type AddButtonProps = {
-//   key: string,
-//   onClick: any,
-// }
-
 
 // Create styles for BoardColumnWrapper element
 const BoardColumnWrapper = styled.div`
@@ -51,9 +39,7 @@ const BoardColumnHeader = styled.div`
   padding: 15px;
   justify-content:space-between;
   align-items: center;
-
 `
-
 // Create styles for BoardColumnTitle element
 const BoardColumnTitle = styled.h2`
   font: 16px sans-serif;
@@ -61,31 +47,6 @@ const BoardColumnTitle = styled.h2`
   letter-spacing: -0.2px;
   text-shadow: 1px 1px 0 #FFF;
 `
-// // Create styles for AddButton element
-// const AddButtonDiv = styled.div`
-//   margin: 10px;
-
-//   right:0;
-//   display:flex;
-//   justify-content: space-between;
-//   background-color:green;
-//   color:white;
-//   cursor: pointer;
-//   &:hover {
-//     box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
-//   }
-
-//  `
-//  const SettingToggleDiv = styled.div`
-//   margin: 10px;
-
-//   right:0;
-//   left:auto;
-//   display:flex;
-//   cursor: pointer;
-
-
-// `
 // Create styles for BoardColumnContent element
 const BoardColumnContent = styled.div<BoardColumnContentStylesProps>`
   min-height: 20px;
@@ -93,12 +54,9 @@ const BoardColumnContent = styled.div<BoardColumnContentStylesProps>`
   border-radius: 4px;
 `
 
-
-
 // Create and export the BoardColumn component
 export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
   //refactor the props
-  console.log("column props:", props);
   const { dataState, items, column, setDataState } = props;
   const itemList = dataState.items;
   const columns = dataState.columns;
@@ -143,28 +101,14 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
   // Create handler for uplift the edited item state to its parent component
   const [editState, setEditState] = useState<any>('');
   const [confirmState, setConfirmState] = useState<any>('');
-  // Create handler for update the dataState based on the input result
-  const editItemHandler = (e: any) => {
-    let itemKey = e.target.id;
-    itemList[`${itemKey}`].content = editState;
-    // update dataState (update items list as well)
-    const newDataState = {
-      ...dataState,
-      items: itemList
-    }
-    console.log("newDataState:", newDataState);
-    setDataState(newDataState);
-  }
+ 
   return (
     <BoardColumnWrapper>
       <BoardColumnHeader>
         <BoardColumnTitle>
           {column.title}
         </BoardColumnTitle>
-        {/* <AddButtonDiv> */}
-
         <Button variant='add' key={column.id} id={column.id} onClick={addItemHandler} />
-        {/* </AddButtonDiv> */}
       </BoardColumnHeader>
       <Droppable droppableId={column.id}>
         {(provided, snapshot) => (

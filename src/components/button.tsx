@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import styled from 'styled-components';
 
 // Define types for board item element properties
@@ -13,9 +12,7 @@ type ButtonProps = {
 
 export const Button: React.FC<ButtonProps> = (props) => {
     const { id, onClick, variant } = props;
-
     const ButtonEl = styled.button<ButtonProps>`
-
         width:32px;
         height:32px;
         color:white;
@@ -32,7 +29,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
         background: linear-gradient(145deg, #5dffef, #4ee1c9);
         box-shadow:  1.5px 1.5px 2px #39a391,
                      -1.5px -1.5px 2px #75ffff;
-
       `}
         ${({ variant = '' }) => variant === 'confirm' && `
         width:24px;
@@ -40,7 +36,6 @@ export const Button: React.FC<ButtonProps> = (props) => {
         background: linear-gradient(145deg, #27ff4c, #20dd40);
         box-shadow:  1.5px 1.5px 2px #179f2e,
                      -1.5px -1.5px 2px #31ff60;
-
         `}      
      `
     return (
@@ -48,8 +43,4 @@ export const Button: React.FC<ButtonProps> = (props) => {
             {variant==='add'?'╋':'✔' }
         </ButtonEl>
     );
-
-
-
-
 };

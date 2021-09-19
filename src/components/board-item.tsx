@@ -126,9 +126,6 @@ export const BoardItem = (props: BoardItemProps) => {
               {item.content}
             </div>
         }
-
-
-        {/* */}
       </BoardItemEl>
     )}
   </Draggable>
