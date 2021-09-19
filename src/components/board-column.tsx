@@ -126,6 +126,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     console.log("newItemId:", newItemId);
     console.log("newItemContent:", newItemContent);
     console.log("columns[targetKey].itemsIds:", columns[targetKey].itemsIds);
+    // update the current column list with the new added item    
     let ItemsIdsArr = columns[targetKey].itemsIds;
     ItemsIdsArr.unshift(newItemId);
 
@@ -133,23 +134,21 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
 
     // Create new Item to update Items 
 
-    let newItemObj = {
+    let newItem = {
       id: newItemId,
       content: newItemContent
     };
-    itemList[`${newItemId}`] = newItemObj;
+    itemList[`${newItemId}`] = newItem;
 
     console.log("itemList:", itemList);
 
-    // update dataState 
+    // update dataState (update items list as well)
     const newDataState = {
       ...dataState,
       items: itemList
     }
     console.log("newDataState:", newDataState);
-
     parentCallback(newDataState);
-
 
   }
 

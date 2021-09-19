@@ -31,7 +31,7 @@ export const Board: React.FC = (props) => {
 
     // Do nothing if item is dropped outside the list
     if (!destination || destination === undefined || destination === null) {
-      return
+      return 
     }
 
     // Do nothing if the item is dropped into the same place
@@ -72,7 +72,8 @@ export const Board: React.FC = (props) => {
       }
 
       // Update the board state with new data
-      setDataState(newState)
+      setDataState(newState);
+      
     } else {
       // Moving items from one list to another
       // Get all item ids in source list
