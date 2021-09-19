@@ -15,7 +15,6 @@ type BoardColumnProps = {
   column: any,
   dataState: any,
   items: any,
-  parentCallback: any,
   setDataState: any
 }
 
@@ -32,10 +31,10 @@ type BoardColumnContentStylesProps = {
 // }
 
 
-
 // Create styles for BoardColumnWrapper element
 const BoardColumnWrapper = styled.div`
   flex: 1;
+  width: 270px;
   padding: 15px;
   background-color:#ecf0f3;
   border-radius: 4px;
@@ -98,12 +97,12 @@ const BoardColumnContent = styled.div<BoardColumnContentStylesProps>`
 // Create and export the BoardColumn component
 export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
   console.log("props:", props);
-  const { dataState, column, setDataState, parentCallback } = props;
+  const { dataState, column, setDataState } = props;
   let itemList = dataState.items;
   let columns = dataState.columns;
 
-
-  const onClickAdder = (e: any) => {
+// Create handler for button to add item 
+  const addItemHandler= (e: any) => {
     console.log("e:", e);
     console.log("e.target:", e.target);
     //Check out the clicked button and define its column
@@ -112,15 +111,15 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     //Check out the number of the keys and name the added item
     let count = Object.keys(itemList).length;
 
-    let lastId = Object.keys(itemList)[count-1];
+    let lastId = Object.keys(itemList)[count - 1];
 
-    console.log(" Object.keys(itemList):",  Object.keys(itemList));
+    console.log(" Object.keys(itemList):", Object.keys(itemList));
     console.log("count:", count);
     console.log("lastId:", lastId);
     let largestIndex = parseInt(lastId.substring(5));
-    
-    let newIndex=largestIndex+1;
-    let newItemId: string ='item-'+ newIndex;
+
+    let newIndex = largestIndex + 1;
+    let newItemId: string = 'item-' + newIndex;
     let newItemContent: string = `Content of New item.`;
 
     console.log("newItemId:", newItemId);
@@ -148,26 +147,24 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
       items: itemList
     }
     console.log("newDataState:", newDataState);
-    parentCallback(newDataState);
-
+    setDataState(newDataState);
   }
 
   return (
     <BoardColumnWrapper>
       <BoardColumnHeader>
         <BoardColumnTitle>
-          {props.column.title}
+          {column.title}
         </BoardColumnTitle>
         {/* <AddButtonDiv> */}
 
         {/* <SettingToggle key={column.id} onClick={onClickAdder} /> */}
 
-        <AddButton key={column.id} id={column.id} onClick={onClickAdder} />
+        <AddButton key={column.id} id={column.id} onClick={addItemHandler} />
         {/* </AddButtonDiv> */}
       </BoardColumnHeader>
-      <Droppable droppableId={props.column.id}>
+      <Droppable droppableId={column.id}>
         {(provided, snapshot) => (
-
           <BoardColumnContent
             {...provided.droppableProps}
             ref={provided.innerRef}

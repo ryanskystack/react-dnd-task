@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 // Import data for board
@@ -9,33 +9,50 @@ import { initialBoardData } from '../data/board-initial-data';
 // Import BoardColumn component
 import { BoardColumn } from './board-column';
 
-// Create styles board element properties
-const BoardEl = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+// Create styled draggable board Column element properties
+const DroppableBoardEl = styled.div`
+display: flex;
+justify-content: space-around; 
+align-items: flex-start
 `
 
+// // Create styles board element properties
+// const BoardEl = styled.div`
+
+// `
 
 export const Board: React.FC = (props) => {
   // Initialize board state with board data
   const [dataState, setDataState] = useState<any>(initialBoardData);
-  
-  const handleUpdate = (newDataState: any) => {
-    setDataState(newDataState);
-  }
 
   // Handle drag & drop
   const onDragEnd = (result: any) => {
-    const { source, destination, draggableId } = result
+    const { source, destination, draggableId, type } = result
 
     // Do nothing if item is dropped outside the list
     if (!destination || destination === undefined || destination === null) {
-      return 
+      return
     }
 
     // Do nothing if the item is dropped into the same place
     if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return
+    }
+    //Check out that the column is being dragged
+    if (type === "column") {
+      // Get all columns ids
+      const newColumnsOrder = Array.from(dataState.columnsOrder);
+      // Remove the id of dragged column from its original position
+      newColumnsOrder.splice(source.index, 1);
+      // Insert the id of dragged column to the new position
+      newColumnsOrder.splice(destination.index, 0, draggableId);
+      console.log("newColumnsOrder " + newColumnsOrder);
+      // Update new data state with updated order for columns
+      const newDataState = {
+        ...dataState,
+        columnsOrder: newColumnsOrder
+      };
+      setDataState(newDataState);
       return
     }
 
@@ -47,7 +64,7 @@ export const Board: React.FC = (props) => {
 
     // Moving items in the same list
     if (columnStart === columnFinish) {
-      // Get all item ids in currently active list
+      // Get all item ids in currently active list     
       const newItemsIds = Array.from(columnStart.itemsIds)
 
       // Remove the id of dragged item from its original position
@@ -73,7 +90,7 @@ export const Board: React.FC = (props) => {
 
       // Update the board state with new data
       setDataState(newState);
-      
+
     } else {
       // Moving items from one list to another
       // Get all item ids in source list
@@ -115,20 +132,46 @@ export const Board: React.FC = (props) => {
     }
   }
 
-
   return (
-    <BoardEl>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {dataState.columnsOrder.map((columnId: string) => {
-          // Get id of the current column
-          const column = (dataState.columns as any)[columnId]
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId='all-columns' direction="horizontal" type="column" >
+        {(provided, snapshot) => (
+          <DroppableBoardEl
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {dataState.columnsOrder.map((columnId: string, index: number) => {
+              // Get id of the current column
+              const column = (dataState.columns as any)[columnId]
+              // Get item belonging to the current column
+              const items = column.itemsIds.map((itemId: string) => (dataState.items as any)[itemId])
+              // Render the BoardColumn component
+              return (
+                <Draggable key={columnId} draggableId={columnId} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                    >
+                        <BoardColumn
+                          key={column.id}
+                          dataState={dataState}
+                          column={column}
+                          items={items}
+                          setDataState={setDataState}
+                        />
+                    </div>
+                  )}
+                </Draggable>
+              )
+            })
+            }
+            {provided.placeholder}
+          </DroppableBoardEl>
+        )}
+      </Droppable>
+    </DragDropContext>
 
-          // Get item belonging to the current column
-          const items = column.itemsIds.map((itemId: string) => (dataState.items as any)[itemId])
-          // Render the BoardColumn component
-          return <BoardColumn key={column.id} dataState={dataState} column={column} items={items} parentCallback={handleUpdate} setDataState={setDataState} />
-        })}
-      </DragDropContext>
-    </BoardEl>
   )
 }

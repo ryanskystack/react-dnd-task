@@ -44,7 +44,8 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
 
 // Create and export the BoardItem component
 export const BoardItem = (props: BoardItemProps) => {
-  return <Draggable draggableId={props.item.id} index={props.index}>
+  const { item, index } = props;
+  return <Draggable draggableId={item.id} index={index}>
     {(provided, snapshot) => (
       <BoardItemEl
         {...provided.draggableProps}
@@ -52,7 +53,7 @@ export const BoardItem = (props: BoardItemProps) => {
         ref={provided.innerRef}
         isDragging={snapshot.isDragging}
       >
-        {props.item.content}
+        {item.content}
       </BoardItemEl>
     )}
   </Draggable>
