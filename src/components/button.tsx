@@ -29,18 +29,28 @@ export const Button: React.FC<ButtonProps> = (props) => {
         background: linear-gradient(145deg, #5dffef, #4ee1c9);
         box-shadow:  1.5px 1.5px 2px #39a391,
                      -1.5px -1.5px 2px #75ffff;
-      `}
+         `}
         ${({ variant = '' }) => variant === 'confirm' && `
         width:24px;
         height:24px;
         background: linear-gradient(145deg, #27ff4c, #20dd40);
         box-shadow:  1.5px 1.5px 2px #179f2e,
                      -1.5px -1.5px 2px #31ff60;
-        `}      
+        `} 
+        ${({ variant = '' }) => variant === 'delete' && `
+        width:24px;
+        height:24px;
+        background: linear-gradient(145deg, #ff2727, #e02020);
+        box-shadow:  2px 2px 5px #a91818,,
+                     -2px -2px 5px #ff3030;
+        right:-100px;
+        `}  
      `
     return (
-        <ButtonEl id={id} onClick={onClick} variant={variant} type="button"> 
-            {variant==='add'?'╋':'✔' }
+        <ButtonEl id={id} onClick={onClick} variant={variant} type="button">
+            {variant === 'add' && '╋'}
+            {variant === 'confirm' && '✔'}
+            {variant === 'delete' && '─'}
         </ButtonEl>
     );
 };
