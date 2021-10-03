@@ -63,9 +63,9 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
   console.log('Column,Props:',props);
   // Create handler for button to add item 
   const addItemHandler = (e: any) => {
-
     //Check out the clicked button and define its column
     let targetKey = (e.target as any).id;
+    console.log('add e.id:',targetKey)
     //Check out the number of the keys and name the added item
     let count = Object.keys(itemList).length;
     let lastId = Object.keys(itemList)[count - 1];
@@ -75,9 +75,19 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     // let newItemContent: string = `Content of New item.`;
 
     // update the current column list with the new added item    
-    let newItemsIds = columns[targetKey].itemsIds;
+    console.log('column column(prop):', column);
+    let newItemsIds = column.itemsIds;
+    console.log('column oldItemsIds:', newItemsIds)
     newItemsIds.unshift(newItemId);
-
+    console.log('column newItemsIds:', newItemsIds)
+    let newColumn = {
+      ...column,
+      itemsIds:newItemsIds
+    }
+    columns[`${targetKey}`]=newColumn;
+    // column.itemsIds=newItemsIds;
+    console.log('column new column:', column)
+    // console.log('column dataState1:',dataState)
     // Create new Item to update Items 
     let newItem = {
       id: newItemId,
@@ -91,13 +101,12 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
       ...dataState,
       items: itemList
     }
+    console.log('add item newDataState:', newDataState)
     setDataState(newDataState);
   }
+  console.log('column :column(prop)',column)
+  console.log('column :column.itemsIds',column.itemsIds)
 
-  // Create handler for uplift the edited item state to its parent component
-  const [editState, setEditState] = useState<any>('');
-  const [confirmState, setConfirmState] = useState<any>('');
-  // const [deleteState, setDeleteState] = useState<any>(dataState);
   return (
     <BoardColumnWrapper>
       <BoardColumnHeader>
@@ -119,10 +128,6 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
                 item={item}
                 column={column}
                 index={index}
-                editState={editState}
-                setEditState={setEditState}
-                confirmState={confirmState}
-                setConfirmState={setConfirmState}
                 dataState={dataState}
                 setDataState={setDataState}
               />)}

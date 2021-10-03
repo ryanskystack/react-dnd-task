@@ -148,6 +148,10 @@ export const Board: React.FC = (props) => {
               // Get item belonging to the current column
               const items = column.itemsIds.map((itemId: string) => (dataState.items as any)[itemId])
               // Render the BoardColumn component
+
+              console.log('board items:', items);
+              console.log('board column:', column);
+              console.log('board dataState:', dataState);
               return (
                 <Draggable
                   draggableId={columnId}
