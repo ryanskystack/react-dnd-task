@@ -20,12 +20,14 @@ export const Board: React.FC = (props) => {
 
   // Initialize board state with board data
 
-  const initialDataState = initialBoardData;
+  const initialDataState = { ...initialBoardData };
   const initialItems: object = initialDataState.items;
-  let itemArr = Object.values(initialItems);
-  for (let i = 0; i < 7; i++) {
-    itemArr[i]['isActive'] = false;
-  };
+
+  for (const value in initialItems) {
+    if (Object.prototype.hasOwnProperty.call(initialItems, value)) {
+      Object.assign(value, { isActive: false })
+    }
+  }
 
   const [dataState, setDataState] = useState<any>(initialDataState);
 

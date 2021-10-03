@@ -60,12 +60,12 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
   const { dataState, items, column, setDataState } = props;
   const itemList = dataState.items;
   const columns = dataState.columns;
-  console.log('Column,Props:',props);
+  console.log('Column,Props:', props);
   // Create handler for button to add item 
   const addItemHandler = (e: any) => {
     //Check out the clicked button and define its column
     let targetKey = (e.target as any).id;
-    console.log('add e.id:',targetKey)
+    console.log('add e.id:', targetKey)
     //Check out the number of the keys and name the added item
     let count = Object.keys(itemList).length;
     let lastId = Object.keys(itemList)[count - 1];
@@ -82,9 +82,9 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     console.log('column newItemsIds:', newItemsIds)
     let newColumn = {
       ...column,
-      itemsIds:newItemsIds
+      itemsIds: newItemsIds
     }
-    columns[`${targetKey}`]=newColumn;
+    columns[`${targetKey}`] = newColumn;
     // column.itemsIds=newItemsIds;
     console.log('column new column:', column)
     // console.log('column dataState1:',dataState)
@@ -104,9 +104,22 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
     console.log('add item newDataState:', newDataState)
     setDataState(newDataState);
   }
-  console.log('column :column(prop)',column)
-  console.log('column :column.itemsIds',column.itemsIds)
 
+  // Create handler for uplift the edited item state to its parent component
+  const [editState, setEditState] = useState<any>('');
+  // const [confirmState, setConfirmState] = useState<any>('');
+  console.log('column :column(prop)', column)
+  console.log('column :column.itemsIds', column.itemsIds)
+  // const [deleteState, setDeleteState] = useState<any>(column.itemsIds);
+
+
+  // const [deleteState, setDeleteState] = useState<any>(dataState);
+  // console.log('column deleteState:',deleteState)
+  // console.log('column editState:',editState)
+  // console.log('column confirmState:',confirmState) 
+  // console.log('column setEditState:',setEditState)
+  // console.log('column setConfirmState:',setConfirmState) 
+  // console.log('column confirmState:',confirmState) 
   return (
     <BoardColumnWrapper>
       <BoardColumnHeader>
@@ -128,8 +141,13 @@ export const BoardColumn: React.FC<BoardColumnProps> = (props) => {
                 item={item}
                 column={column}
                 index={index}
+                editState={editState}
+                setEditState={setEditState}
+                // confirmState={confirmState}
+                // setConfirmState={setConfirmState}
                 dataState={dataState}
                 setDataState={setDataState}
+
               />)}
             {provided.placeholder}
           </BoardColumnContent>

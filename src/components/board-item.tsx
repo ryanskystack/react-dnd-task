@@ -10,8 +10,14 @@ type BoardItemProps = {
   item: any,
   index: any,
   column: any,
+  editState: any,
+  setEditState: any,
+  // confirmState: any,
+  // setConfirmState: any,
   dataState: any,
   setDataState: any,
+  // deleteState: any,
+  // setDeleteState: any
 }
 
 // Define types for board item element style properties
@@ -85,10 +91,9 @@ const InputEl = styled.input`
 
 // Create and export the BoardItem component
 export const BoardItem = (props: BoardItemProps) => {
-  const { item, index, column, dataState, setDataState } = props;
+  const { item, index, column, dataState, setDataState, setEditState } = props;
   const [inputState, setInputState] = useState<any>(item.content);
   console.log('Item,Props:', props);
-
 
   // Create handler for update the input content of item 
   const changeHanddler = (e: any) => {
@@ -101,18 +106,18 @@ export const BoardItem = (props: BoardItemProps) => {
   // Create handler for confirming the input content of item 
   const confirmHandler = (e: any) => {
     console.log('confirm,e:', e.target);
-    let columnId: string = e.target.id.substr(7, 8);
-    let itemId = e.target.id.substring(15);    
-    console.log('confirm columnId:', columnId);
+    // let columnId: string = e.target.id.substr(7, 8);
+    let itemId = e.target.id.substring(15);
+    // console.log('confirm columnId:', columnId);
     console.log('confirm itemId:', itemId);
     let newDataState = { ...dataState };
-    let newItem=newDataState['items'][itemId];
+    let newItem = newDataState['items'][itemId];
     if (inputState === null) {
       newItem.content = ''
     } else {
       newItem.content = inputState;
     }
-    newItem['isActive'] = !item['isActive'];
+    newItem['isActive'] = false;
     console.log('confirm dataState:', newDataState);
     setDataState(newDataState);
   }
@@ -121,14 +126,22 @@ export const BoardItem = (props: BoardItemProps) => {
   const deleteHandler = (e: any) => {
     console.log('delete dataState', dataState);
     console.log('delete column:', column);
+
     console.log('e.target:', e.target);
     let columnId: string = e.target.id.substr(6, 8);
+
     let itemId = e.target.id.substring(14);
 
     console.log('delete columnId', columnId);
     console.log('delete itemId', itemId);
-    console.log('delete item:', item);
 
+    // console.log('delete deleteState', deleteState);
+    // console.log('delete item:',dataState.items[`${itemId}`]);
+
+    console.log('delete item:', item);
+    // delete dataState.items[`${itemId}`];
+    // let itemsIds = dataState.columns[`${columnId}`].itemsIds;
+    // let newDataState=JSON.parse(JSON.stringify(dataState));
     let newDataState = { ...dataState };
     console.log('init newDataState:', newDataState);
     delete newDataState['items'][itemId];
@@ -142,21 +155,37 @@ export const BoardItem = (props: BoardItemProps) => {
       }
     }
     console.log('New itemsArr:', itemsArr);
+
+    // console.log('delete deleteState:', deleteState);
+
     console.log('new newDataState:', newDataState);
+
     setDataState(newDataState);
+
+
   }
 
 
   //Create handler for editting the item by click the item itself
   const editHandler = (e: any) => {
-    console.log('confirm,e:', e.target);
-    let itemId = e.target.id;    
-    console.log('confirm itemId:', itemId);
+    console.log('confirm, item id:', e.target.id);
+    let itemId = e.target.id;
     let newDataState = { ...dataState };
-    let newItem=newDataState['items'][itemId];
+    let newItem = { ...item };
     newItem['isActive'] = true;
+    newDataState['items'][itemId] = newItem;
+    item['isActive'] = true;
+
     console.log('confirm newDataState:', newDataState);
-    setDataState(newDataState);
+     setEditState(item); 
+    //  setDataState(newDataState);
+  
+    // console.log('edit,editState:', editState);
+    // console.log('edit,confirmState:', confirmState);
+    // item === confirmState && setConfirmState('');
+
+
+    // setEditState(item);
   }
 
   return <Draggable draggableId={item.id} index={index}>
