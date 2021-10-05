@@ -36,12 +36,13 @@ const BoardItemEl = styled.div<BoardItemStylesProps>`
   font-family: 'Montserrat', sans-serif;
   letter-spacing: -0.2px;
   font-size: 18px;
-  padding: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 10px;
   background-color: #EBECF0;
   text-shadow: 1px 1px 0 #FFF;
   color: #61677C;
   font-weight: bold;
-  font-size:  
   transition: all 0.2s ease-in-out;
   cursor: move;
   
@@ -70,14 +71,14 @@ const InputWrapperEl = styled.div`
 // Create style for input item element
 const InputEl = styled.input`
 
-  margin-right: 8px;
+  margin-right: 4px;
   background: #d0f6ec;
   border-width:0; 
   box-shadow:  inset 2px 2px 5px #87a099, inset -5px -5px 10px #ffffff;
   color: #61677C;
   font-weight: bold;  
   font-weight: 400;
-  width: 200px;
+  width: 190px;
   height:28px  
 
   &:focus {
@@ -211,7 +212,8 @@ export const BoardItem = (props: BoardItemProps) => {
             )
             :
             <div id={item.id} key={item.id} onClick={editHandler}>
-              {item.content}
+              {item.content===''?"\u00A0":item.content}
+            {/* if in JS, put &nbsp  */}
             </div>
         }
       </BoardItemEl>

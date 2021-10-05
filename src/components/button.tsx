@@ -13,8 +13,6 @@ type ButtonProps = {
 export const Button: React.FC<ButtonProps> = (props) => {
     const { id, onClick, variant } = props;
     const ButtonEl = styled.button<ButtonProps>`
-        width:32px;
-        height:32px;
         color:white;
         border: 0;
         padding:0;
@@ -40,10 +38,10 @@ export const Button: React.FC<ButtonProps> = (props) => {
         ${({ variant = '' }) => variant === 'delete' && `
         width:24px;
         height:24px;
-        background: linear-gradient(145deg, #ff2727, #e02020);
-        box-shadow:  2px 2px 5px #a91818,,
-                     -2px -2px 5px #ff3030;
-        right:-100px;
+        background: linear-gradient(145deg, #e91818, #c41414);
+        box-shadow:  1.5px 1.5px 2px #b71212,
+                     -1.5px -1.5px 2px #fd1a1a;
+
         `}  
      `
     return (
