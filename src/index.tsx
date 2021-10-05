@@ -1,14 +1,14 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import { createGlobalStyle } from 'styled-components'
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { createGlobalStyle } from 'styled-components';
 
 // Import main Board component
-import { Board } from './components/board'
+import { Board } from './components/board';
 
 // Use createGlobalStyle to change the background of 'body' element
 const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #4bcffa;
+  body {    
+    background-color: #ecf0f3;
   }
 `
 
